@@ -1,6 +1,5 @@
 const WebSocket = require('ws');
 const { Game } = require('./gameLogic'); // Make sure this path is correct
-
 const wss = new WebSocket.Server({ port: 3000 });
 const game = new Game();
 
