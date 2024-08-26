@@ -2,7 +2,7 @@ class Game {
     constructor() {
       this.reset();
     }
-  
+    
     reset() {
       this.board = Array(5).fill(null).map(() => Array(5).fill(null));
       this.players = ['A', 'B'];
