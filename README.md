@@ -20,12 +20,12 @@ This project implements a turn-based chess-like game with a 5x5 grid. It uses We
 ## Project Structure
 
 - `client/`: Contains the client-side code.
-  - `index.html`: The main HTML file for the client.
-  - `app.js`: JavaScript code for handling game interactions and WebSocket communication.
-  - `styles.css`: CSS file for styling the client interface.
+  - `client.html`: The main HTML file for the client.
+  - `client.js`: JavaScript code for handling game interactions and WebSocket communication.
+  - `style.css`: CSS file for styling the client interface.
 - `server/`: Contains the server-side code.
   - `server.js`: Main server file that handles WebSocket connections and game logic.
-  - `gameLogic.js`: Contains game logic and state management.
+  - `game_logic.js`: Contains game logic and state management.
 - `README.md`: This file.
 
 ## Installation
