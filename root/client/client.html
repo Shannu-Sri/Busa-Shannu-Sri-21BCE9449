@@ -3,16 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turn-Based Chess-like Game</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Chess-Like Game</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Turn-Based Chess-like Game</h1>
-    <div id="game">
-        <div id="board"></div>
-        <div id="controls"></div>
-    </div>
-    <div id="status"></div>
+    <header>
+        <h1>Turn-Based Chess-Like Game</h1>
+    </header>
+
+    <main>
+        <section id="game-board" aria-label="Game Board">
+            <!-- Game board grid will be rendered here -->
+        </section>
+
+        <section id="controls" aria-label="Game Controls">
+            <div id="game-actions">
+                <button id="start-game" class="btn-primary">Start Game</button>
+                <button id="end-turn" class="btn-secondary" disabled>End Turn</button>
+            </div>
+
+            <div id="hero3-moves" aria-label="Hero3 Move Controls" style="display: none;">
+                <button onclick="sendMove('H3:FL')" class="btn-move">FL</button>
+                <button onclick="sendMove('H3:FR')" class="btn-move">FR</button>
+                <button onclick="sendMove('H3:BL')" class="btn-move">BL</button>
+                <button onclick="sendMove('H3:BR')" class="btn-move">BR</button>
+                <button onclick="sendMove('H3:RF')" class="btn-move">RF</button>
+                <button onclick="sendMove('H3:RB')" class="btn-move">RB</button>
+                <button onclick="sendMove('H3:LF')" class="btn-move">LF</button>
+                <button onclick="sendMove('H3:LB')" class="btn-move">LB</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Chess-Like Game. All rights reserved.</p>
+    </footer>
+
     <script src="client.js"></script>
 </body>
 </html>
