@@ -39,5 +39,5 @@ This project implements a turn-based chess-like game with a 5x5 grid. It uses We
 1. **Clone the Repository**
 
    ```bash
-   git clone <https://github.com/ShreyasVajpayee19/ShreyasVajpayee21BIT0202>
+   git clone <https://github.com/Shannu-Sri/Busa-Shannu-Sri-21BCE9449>
    
