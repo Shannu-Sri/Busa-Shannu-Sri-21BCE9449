@@ -1,83 +1,66 @@
-const ws = new WebSocket("ws://localhost:8765");
+const ws = new WebSocket('ws://localhost:3000');
+
+ws.onopen = () => {
+    console.log('Connected to server');
+};
+
+ws.onerror = (error) => {
+    console.error('WebSocket error:', error);
+};
 
 ws.onmessage = (event) => {
-    const message = JSON.parse(event.data);
-    if (message.type === "init") {
-        initializeBoard(message.board);
-        document.getElementById("status").innerText = `Current Player: ${message.player}`;
-    } else if (message.type === "update") {
-        updateBoard(message.board);
-        document.getElementById("status").innerText = `Current Player: ${message.current_player}`;
-    } else if (message.type === "invalid_move") {
-        alert(message.message);
-    } else if (message.type === "game_over") {
-        alert(`Game over! Winner: ${message.winner}`);
+    const data = JSON.parse(event.data);
+    if (data.board) {
+        updateBoard(data.board);
+    }
+    if (data.message) {
+        handleServerMessage(data.message);
     }
 };
 
-function initializeBoard(board) {
-    const boardElement = document.getElementById("board");
-    boardElement.innerHTML = '';
+function updateBoard(board) {
+    const boardElement = document.getElementById('game-board');
+    boardElement.innerHTML = ''; // Clear the board
+
     board.forEach((row, rowIndex) => {
-        row.forEach((cell, colIndex) => {
-            const cellElement = document.createElement("div");
-            cellElement.classList.add("cell");
-            if (cell) {
-                cellElement.innerText = cell;
-                cellElement.classList.add(cell[0]);
-            }
-            cellElement.onclick = () => selectPiece(rowIndex, colIndex);
+        row.forEach((cell, cellIndex) => {
+            const cellElement = document.createElement('div');
+            cellElement.textContent = cell || '';
+            cellElement.dataset.row = rowIndex;
+            cellElement.dataset.cell = cellIndex;
+            cellElement.addEventListener('click', handleCellClick);
             boardElement.appendChild(cellElement);
         });
     });
 }
 
-function updateBoard(board) {
-    const boardElement = document.getElementById("board");
-    board.forEach((row, rowIndex) => {
-        row.forEach((cell, colIndex) => {
-            const cellElement = boardElement.children[rowIndex * 5 + colIndex];
-            cellElement.innerText = cell;
-            cellElement.className = "cell";
-            if (cell) {
-                cellElement.classList.add(cell[0]);
-            }
-        });
-    });
+function handleCellClick(event) {
+    const row = event.target.dataset.row;
+    const cell = event.target.dataset.cell;
+    console.log(Cell clicked: Row ${row}, Cell ${cell});
+    // Add further logic to handle the cell click
 }
 
-let selectedPiece = null;
-
-function selectPiece(row, col) {
-    if (!selectedPiece) {
-        selectedPiece = { row, col };
-        document.getElementById("controls").innerHTML = generateMoveButtons(row, col);
-    } else {
-        selectedPiece = null;
-        document.getElementById("controls").innerHTML = '';
-    }
+function handleServerMessage(message) {
+    console.log(Server: ${message});
+    // Implement additional handling of server messages, e.g., game over, invalid move, etc.
 }
 
-function generateMoveButtons(row, col) {
-    const piece = document.getElementById("board").children[row * 5 + col].innerText;
-    const pieceType = piece.split("-")[1];
+document.getElementById('start-game').addEventListener('click', () => {
+    ws.send(JSON.stringify({ type: 'startGame' }));
+    console.log('Game started');
+});
 
-    let buttons = '';
+document.getElementById('end-turn').addEventListener('click', () => {
+    ws.send(JSON.stringify({ type: 'endTurn' }));
+    console.log('Turn ended');
+});
 
-    const directions = {
-        "P": ["L", "R", "F", "B"],
-        "H1": ["L", "R", "F", "B"],
-        "H2": ["FL", "FR", "BL", "BR"]
-    };
-
-    directions[pieceType].forEach(direction => {
-        buttons += `<button onclick="movePiece('${piece}', '${direction}')">${direction}</button>`;
-    });
-
-    return buttons;
+function showHero3Moves() {
+    document.getElementById('hero3-moves').style.display = 'block';
 }
 
-function movePiece(piece, direction) {
-    const move = { type: "move", piece, direction };
-    ws.send(JSON.stringify(move));
+function sendMove(move) {
+    ws.send(JSON.stringify({ type: 'makeMove', move: move }));
+    console.log(Move sent: ${move});
 }
